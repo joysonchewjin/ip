@@ -52,11 +52,23 @@ public class LeBron {
             } else if (input.startsWith("unmark ")) {
                 markTask(input.substring("unmark ".length()), false);
             } else if (input.equals("todo") || input.startsWith("todo ")) {
-                storeTask(parseTodo(input.equals("todo") ? "" : input.substring("todo ".length())));
+                try {
+                    storeTask(parseTodo(input.equals("todo") ? "" : input.substring("todo ".length())));
+                } catch (LeBronException e) {
+                    System.out.println(e.getMessage());
+                }
             } else if (input.equals("deadline") || input.startsWith("deadline ")) {
-                storeTask(parseDeadline(input.equals("deadline") ? "" : input.substring("deadline ".length())));
+                try {
+                    storeTask(parseDeadline(input.equals("deadline") ? "" : input.substring("deadline ".length())));
+                } catch (LeBronException e) {
+                    System.out.println(e.getMessage());
+                }
             } else if (input.equals("event") || input.startsWith("event ")) {
-                storeTask(parseEvent(input.equals("event") ? "" : input.substring("event ".length())));
+                try {
+                    storeTask(parseEvent(input.equals("event") ? "" : input.substring("event ".length())));
+                } catch (LeBronException e) {
+                    System.out.println(e.getMessage());
+                }
             } else {
                 System.out.println("I don't recognize that command: " + input);
             }
@@ -65,68 +77,70 @@ public class LeBron {
     }
 
     /**
-     * Parses the text after "todo " into a {@link Todo}. Prints a friendly error
-     * and returns {@code null} if the description is missing.
+     * Parses the text after "todo " into a {@link Todo}.
+     *
+     * @throws LeBronException if the description is missing.
      */
-    private static Todo parseTodo(String args) {
+    private static Todo parseTodo(String args) throws LeBronException {
         String description = args.trim();
         if (description.isEmpty()) {
-            System.out.println("A todo needs a description: todo <description>");
-            return null;
+            throw new LeBronException("Airball! A todo needs a description: todo <description>");
         }
         return new Todo(description);
     }
 
     /**
      * Parses the text after "deadline " into a {@link Deadline}, expecting the
-     * form "<description> /by <date>". Prints a friendly error and returns
-     * {@code null} if the description or the "/by <date>" part is missing.
+     * form "<description> /by <date>".
+     *
+     * @throws LeBronException if the description or the "/by <date>" part is missing.
      */
-    private static Deadline parseDeadline(String args) {
+    private static Deadline parseDeadline(String args) throws LeBronException {
         int markerIndex = args.indexOf(" /by ");
         if (markerIndex == -1) {
-            System.out.println("A deadline needs a /by date: deadline <description> /by <date>");
-            return null;
+            throw new LeBronException(
+                    "Travel called! A deadline needs a /by date: deadline <description> /by <date>");
         }
         String description = args.substring(0, markerIndex).trim();
         String by = args.substring(markerIndex + " /by ".length()).trim();
         if (description.isEmpty()) {
-            System.out.println("A deadline needs a description: deadline <description> /by <date>");
-            return null;
+            throw new LeBronException(
+                    "Airball! A deadline needs a description: deadline <description> /by <date>");
         }
         if (by.isEmpty()) {
-            System.out.println("A deadline needs a date after /by: deadline <description> /by <date>");
-            return null;
+            throw new LeBronException(
+                    "Travel called! A deadline needs a date after /by: deadline <description> /by <date>");
         }
         return new Deadline(description, by);
     }
 
     /**
      * Parses the text after "event " into an {@link Event}, expecting the form
-     * "<description> /from <start> /to <end>". Prints a friendly error and
-     * returns {@code null} if the description, "/from", or "/to" part is missing.
+     * "<description> /from <start> /to <end>".
+     *
+     * @throws LeBronException if the description, "/from", or "/to" part is missing.
      */
-    private static Event parseEvent(String args) {
+    private static Event parseEvent(String args) throws LeBronException {
         int fromIndex = args.indexOf(" /from ");
         if (fromIndex == -1) {
-            System.out.println("An event needs a /from time: event <description> /from <start> /to <end>");
-            return null;
+            throw new LeBronException(
+                    "Travel called! An event needs a /from time: event <description> /from <start> /to <end>");
         }
         int toIndex = args.indexOf(" /to ", fromIndex);
         if (toIndex == -1) {
-            System.out.println("An event needs a /to time: event <description> /from <start> /to <end>");
-            return null;
+            throw new LeBronException(
+                    "Travel called! An event needs a /to time: event <description> /from <start> /to <end>");
         }
         String description = args.substring(0, fromIndex).trim();
         String from = args.substring(fromIndex + " /from ".length(), toIndex).trim();
         String to = args.substring(toIndex + " /to ".length()).trim();
         if (description.isEmpty()) {
-            System.out.println("An event needs a description: event <description> /from <start> /to <end>");
-            return null;
+            throw new LeBronException(
+                    "Airball! An event needs a description: event <description> /from <start> /to <end>");
         }
         if (from.isEmpty() || to.isEmpty()) {
-            System.out.println("An event needs both a /from and /to value: event <description> /from <start> /to <end>");
-            return null;
+            throw new LeBronException("Travel called! An event needs both a /from and /to value: "
+                    + "event <description> /from <start> /to <end>");
         }
         return new Event(description, from, to);
     }
