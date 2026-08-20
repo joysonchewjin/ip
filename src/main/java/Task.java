@@ -1,8 +1,9 @@
 /**
  * A single task entered by the user, tracked with a description and a
- * done/not-done status.
+ * done/not-done status. Concrete subclasses ({@link Todo}, {@link Deadline},
+ * {@link Event}) add their own type icon and any type-specific details.
  */
-public class Task {
+public abstract class Task {
     private final String description;
     private boolean isDone;
 
@@ -26,8 +27,11 @@ public class Task {
         return isDone ? "X" : " ";
     }
 
+    /** Returns the single-letter icon identifying this task's type, e.g. "T", "D", "E". */
+    public abstract String getTypeIcon();
+
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        return "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description;
     }
 }

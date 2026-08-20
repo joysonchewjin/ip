@@ -56,9 +56,9 @@ public class LeBron {
         }
     }
 
-    /** Stores an item as a new task and prints an acknowledgement. */
+    /** Stores an item as a new to-do task and prints an acknowledgement. */
     private static void addItem(String item) {
-        tasks[itemCount] = new Task(item);
+        tasks[itemCount] = new Todo(item);
         itemCount++;
         System.out.println("added: " + item);
     }
