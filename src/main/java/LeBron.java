@@ -29,10 +29,11 @@ public class LeBron {
 
     /**
      * Reads commands line by line until "bye" is entered. "list" prints all stored
-     * tasks; "mark <n>"/"unmark <n>" update the done status of task n; "todo
-     * <description>" adds a to-do task; "deadline <description> /by <date>"
-     * adds a deadline task; "event <description> /from <start> /to <end>" adds
-     * an event task; any other input is rejected as an unrecognized command.
+     * tasks; "mark <n>"/"unmark <n>" update the done status of task n; "delete <n>"
+     * removes task n; "todo <description>" adds a to-do task; "deadline
+     * <description> /by <date>" adds a deadline task; "event <description> /from
+     * <start> /to <end>" adds an event task; any other input is rejected as an
+     * unrecognized command.
      */
     private static void processCommands() {
         Scanner scanner = new Scanner(System.in);
@@ -48,6 +49,8 @@ public class LeBron {
                     markTask(input.substring("mark ".length()), true);
                 } else if (input.startsWith("unmark ")) {
                     markTask(input.substring("unmark ".length()), false);
+                } else if (input.startsWith("delete ")) {
+                    deleteTask(input.substring("delete ".length()));
                 } else if (input.equals("todo") || input.startsWith("todo ")) {
                     storeTask(parseTodo(input.equals("todo") ? "" : input.substring("todo ".length())));
                 } else if (input.equals("deadline") || input.startsWith("deadline ")) {
@@ -168,6 +171,30 @@ public class LeBron {
             System.out.println("OK, I've marked this task as not done yet:");
         }
         System.out.println("  " + task);
+    }
+
+    /**
+     * Deletes the task at the given 1-based index (as shown by {@link #printList()})
+     * and prints a confirmation.
+     *
+     * @throws LeBronException if the index is not a number or is out of range.
+     */
+    private static void deleteTask(String indexText) throws LeBronException {
+        int index;
+        try {
+            index = Integer.parseInt(indexText) - 1;
+        } catch (NumberFormatException e) {
+            throw new LeBronException("That's not on the scoreboard — I don't recognize '"
+                    + indexText + "' as a task number: delete <task number>");
+        }
+        if (index < 0 || index >= tasks.size()) {
+            throw new LeBronException("No such play on the roster — there's no task number "
+                    + (index + 1) + ". You have " + tasks.size() + " task(s).");
+        }
+        Task task = tasks.remove(index);
+        System.out.println("Noted. I've removed this task:");
+        System.out.println("  " + task);
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
     }
 
     /** Prints all stored tasks as a numbered list, including their done status. */
