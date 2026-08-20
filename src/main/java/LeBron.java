@@ -19,10 +19,10 @@ public class LeBron {
     /** Maximum number of stored items; the spec guarantees no more than 100 will be entered. */
     private static final int MAX_ITEMS = 100;
 
-    /** Fixed-size store of items entered by the user, in entry order. */
-    private static final String[] items = new String[MAX_ITEMS];
+    /** Fixed-size store of tasks entered by the user, in entry order. */
+    private static final Task[] tasks = new Task[MAX_ITEMS];
 
-    /** Number of items currently stored in {@link #items}. */
+    /** Number of tasks currently stored in {@link #tasks}. */
     private static int itemCount = 0;
 
     public static void main(String[] args) {
@@ -51,17 +51,17 @@ public class LeBron {
         }
     }
 
-    /** Stores an item and prints an acknowledgement. */
+    /** Stores an item as a new task and prints an acknowledgement. */
     private static void addItem(String item) {
-        items[itemCount] = item;
+        tasks[itemCount] = new Task(item);
         itemCount++;
         System.out.println("added: " + item);
     }
 
-    /** Prints all stored items as a numbered list. */
+    /** Prints all stored tasks as a numbered list, including their done status. */
     private static void printList() {
         for (int i = 0; i < itemCount; i++) {
-            System.out.println((i + 1) + ". " + items[i]);
+            System.out.println((i + 1) + ". " + tasks[i]);
         }
     }
 
