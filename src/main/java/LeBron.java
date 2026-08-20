@@ -153,15 +153,8 @@ public class LeBron {
         return new Event(description, from, to);
     }
 
-    /**
-     * Stores a newly parsed task and prints an acknowledgement, unless parsing
-     * already failed (indicated by {@code task} being {@code null}), in which
-     * case the caller has already printed an error and nothing further happens.
-     */
+    /** Stores a newly parsed task and prints an acknowledgement. */
     private static void storeTask(Task task) {
-        if (task == null) {
-            return;
-        }
         tasks[itemCount] = task;
         itemCount++;
         System.out.println("added: " + task);
