@@ -16,22 +16,52 @@ public class LeBron {
             ##### ##### ####  #   #  ###  #   #
             """;
 
+    /** Maximum number of stored items; the spec guarantees no more than 100 will be entered. */
+    private static final int MAX_ITEMS = 100;
+
+    /** Fixed-size store of items entered by the user, in entry order. */
+    private static final String[] items = new String[MAX_ITEMS];
+
+    /** Number of items currently stored in {@link #items}. */
+    private static int itemCount = 0;
+
     public static void main(String[] args) {
         greet();
-        echoUntilBye();
+        processCommands();
         exit();
     }
 
-    /** Reads user input line by line, echoing each one back until "bye" is entered. */
-    private static void echoUntilBye() {
+    /**
+     * Reads commands line by line until "bye" is entered. "list" prints all stored
+     * items; anything else is stored as a new item and acknowledged.
+     */
+    private static void processCommands() {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
             if (input.equals("bye")) {
                 break;
             }
-            System.out.println(input);
+            if (input.equals("list")) {
+                printList();
+            } else {
+                addItem(input);
+            }
             System.out.println(LINE);
+        }
+    }
+
+    /** Stores an item and prints an acknowledgement. */
+    private static void addItem(String item) {
+        items[itemCount] = item;
+        itemCount++;
+        System.out.println("added: " + item);
+    }
+
+    /** Prints all stored items as a numbered list. */
+    private static void printList() {
+        for (int i = 0; i < itemCount; i++) {
+            System.out.println((i + 1) + ". " + items[i]);
         }
     }
 
