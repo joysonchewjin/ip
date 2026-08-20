@@ -65,10 +65,22 @@ public class LeBron {
 
     /**
      * Marks or unmarks the task at the given 1-based index (as shown by
-     * {@link #printList()}) and prints a confirmation.
+     * {@link #printList()}) and prints a confirmation. Prints a friendly error
+     * instead of crashing if the index is not a number or is out of range.
      */
     private static void markTask(String indexText, boolean done) {
-        int index = Integer.parseInt(indexText) - 1;
+        int index;
+        try {
+            index = Integer.parseInt(indexText) - 1;
+        } catch (NumberFormatException e) {
+            System.out.println("That doesn't look like a task number: " + indexText);
+            return;
+        }
+        if (index < 0 || index >= itemCount) {
+            System.out.println("There's no task number " + (index + 1) + ". "
+                    + "You have " + itemCount + " task(s).");
+            return;
+        }
         Task task = tasks[index];
         if (done) {
             task.mark();
