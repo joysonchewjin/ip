@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class LeBron {
     private static final String NAME = "LeBron";
 
@@ -16,7 +18,21 @@ public class LeBron {
 
     public static void main(String[] args) {
         greet();
+        echoUntilBye();
         exit();
+    }
+
+    /** Reads user input line by line, echoing each one back until "bye" is entered. */
+    private static void echoUntilBye() {
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNextLine()) {
+            String input = scanner.nextLine();
+            if (input.equals("bye")) {
+                break;
+            }
+            System.out.println(input);
+            System.out.println(LINE);
+        }
     }
 
     /** Prints the startup banner and greeting, wrapped in divider lines. */
