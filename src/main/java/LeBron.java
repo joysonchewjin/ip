@@ -33,10 +33,10 @@ public class LeBron {
 
     /**
      * Reads commands line by line until "bye" is entered. "list" prints all stored
-     * tasks; "mark <n>"/"unmark <n>" update the done status of task n;
-     * "deadline <description> /by <date>" adds a deadline task; "event
-     * <description> /from <start> /to <end>" adds an event task; anything else
-     * is stored as a to-do task and acknowledged.
+     * tasks; "mark <n>"/"unmark <n>" update the done status of task n; "todo
+     * <description>" adds a to-do task; "deadline <description> /by <date>"
+     * adds a deadline task; "event <description> /from <start> /to <end>" adds
+     * an event task; any other input is rejected as an unrecognized command.
      */
     private static void processCommands() {
         Scanner scanner = new Scanner(System.in);
@@ -51,15 +51,30 @@ public class LeBron {
                 markTask(input.substring("mark ".length()), true);
             } else if (input.startsWith("unmark ")) {
                 markTask(input.substring("unmark ".length()), false);
+            } else if (input.equals("todo") || input.startsWith("todo ")) {
+                storeTask(parseTodo(input.equals("todo") ? "" : input.substring("todo ".length())));
             } else if (input.equals("deadline") || input.startsWith("deadline ")) {
                 storeTask(parseDeadline(input.equals("deadline") ? "" : input.substring("deadline ".length())));
             } else if (input.equals("event") || input.startsWith("event ")) {
                 storeTask(parseEvent(input.equals("event") ? "" : input.substring("event ".length())));
             } else {
-                storeTask(new Todo(input));
+                System.out.println("I don't recognize that command: " + input);
             }
             System.out.println(LINE);
         }
+    }
+
+    /**
+     * Parses the text after "todo " into a {@link Todo}. Prints a friendly error
+     * and returns {@code null} if the description is missing.
+     */
+    private static Todo parseTodo(String args) {
+        String description = args.trim();
+        if (description.isEmpty()) {
+            System.out.println("A todo needs a description: todo <description>");
+            return null;
+        }
+        return new Todo(description);
     }
 
     /**
