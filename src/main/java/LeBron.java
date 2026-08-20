@@ -48,9 +48,17 @@ public class LeBron {
             if (input.equals("list")) {
                 printList();
             } else if (input.startsWith("mark ")) {
-                markTask(input.substring("mark ".length()), true);
+                try {
+                    markTask(input.substring("mark ".length()), true);
+                } catch (LeBronException e) {
+                    System.out.println(e.getMessage());
+                }
             } else if (input.startsWith("unmark ")) {
-                markTask(input.substring("unmark ".length()), false);
+                try {
+                    markTask(input.substring("unmark ".length()), false);
+                } catch (LeBronException e) {
+                    System.out.println(e.getMessage());
+                }
             } else if (input.equals("todo") || input.startsWith("todo ")) {
                 try {
                     storeTask(parseTodo(input.equals("todo") ? "" : input.substring("todo ".length())));
@@ -161,21 +169,21 @@ public class LeBron {
 
     /**
      * Marks or unmarks the task at the given 1-based index (as shown by
-     * {@link #printList()}) and prints a confirmation. Prints a friendly error
-     * instead of crashing if the index is not a number or is out of range.
+     * {@link #printList()}) and prints a confirmation.
+     *
+     * @throws LeBronException if the index is not a number or is out of range.
      */
-    private static void markTask(String indexText, boolean done) {
+    private static void markTask(String indexText, boolean done) throws LeBronException {
         int index;
         try {
             index = Integer.parseInt(indexText) - 1;
         } catch (NumberFormatException e) {
-            System.out.println("That doesn't look like a task number: " + indexText);
-            return;
+            throw new LeBronException("That's not on the scoreboard — I don't recognize '"
+                    + indexText + "' as a task number: mark <task number>");
         }
         if (index < 0 || index >= itemCount) {
-            System.out.println("There's no task number " + (index + 1) + ". "
-                    + "You have " + itemCount + " task(s).");
-            return;
+            throw new LeBronException("No such play on the roster — there's no task number "
+                    + (index + 1) + ". You have " + itemCount + " task(s).");
         }
         Task task = tasks[index];
         if (done) {
