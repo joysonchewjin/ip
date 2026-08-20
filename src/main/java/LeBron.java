@@ -34,8 +34,9 @@ public class LeBron {
     /**
      * Reads commands line by line until "bye" is entered. "list" prints all stored
      * tasks; "mark <n>"/"unmark <n>" update the done status of task n;
-     * "deadline <description> /by <date>" adds a deadline task; anything else is
-     * stored as a to-do task and acknowledged.
+     * "deadline <description> /by <date>" adds a deadline task; "event
+     * <description> /from <start> /to <end>" adds an event task; anything else
+     * is stored as a to-do task and acknowledged.
      */
     private static void processCommands() {
         Scanner scanner = new Scanner(System.in);
@@ -52,6 +53,8 @@ public class LeBron {
                 markTask(input.substring("unmark ".length()), false);
             } else if (input.equals("deadline") || input.startsWith("deadline ")) {
                 storeTask(parseDeadline(input.equals("deadline") ? "" : input.substring("deadline ".length())));
+            } else if (input.equals("event") || input.startsWith("event ")) {
+                storeTask(parseEvent(input.equals("event") ? "" : input.substring("event ".length())));
             } else {
                 storeTask(new Todo(input));
             }
@@ -81,6 +84,36 @@ public class LeBron {
             return null;
         }
         return new Deadline(description, by);
+    }
+
+    /**
+     * Parses the text after "event " into an {@link Event}, expecting the form
+     * "<description> /from <start> /to <end>". Prints a friendly error and
+     * returns {@code null} if the description, "/from", or "/to" part is missing.
+     */
+    private static Event parseEvent(String args) {
+        int fromIndex = args.indexOf(" /from ");
+        if (fromIndex == -1) {
+            System.out.println("An event needs a /from time: event <description> /from <start> /to <end>");
+            return null;
+        }
+        int toIndex = args.indexOf(" /to ", fromIndex);
+        if (toIndex == -1) {
+            System.out.println("An event needs a /to time: event <description> /from <start> /to <end>");
+            return null;
+        }
+        String description = args.substring(0, fromIndex).trim();
+        String from = args.substring(fromIndex + " /from ".length(), toIndex).trim();
+        String to = args.substring(toIndex + " /to ".length()).trim();
+        if (description.isEmpty()) {
+            System.out.println("An event needs a description: event <description> /from <start> /to <end>");
+            return null;
+        }
+        if (from.isEmpty() || to.isEmpty()) {
+            System.out.println("An event needs both a /from and /to value: event <description> /from <start> /to <end>");
+            return null;
+        }
+        return new Event(description, from, to);
     }
 
     /**
