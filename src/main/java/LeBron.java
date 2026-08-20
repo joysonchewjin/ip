@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class LeBron {
@@ -16,14 +18,8 @@ public class LeBron {
             ##### ##### ####  #   #  ###  #   #
             """;
 
-    /** Maximum number of stored items; the spec guarantees no more than 100 will be entered. */
-    private static final int MAX_ITEMS = 100;
-
-    /** Fixed-size store of tasks entered by the user, in entry order. */
-    private static final Task[] tasks = new Task[MAX_ITEMS];
-
-    /** Number of tasks currently stored in {@link #tasks}. */
-    private static int itemCount = 0;
+    /** Store of tasks entered by the user, in entry order. */
+    private static final List<Task> tasks = new ArrayList<>();
 
     public static void main(String[] args) {
         greet();
@@ -141,8 +137,7 @@ public class LeBron {
 
     /** Stores a newly parsed task and prints an acknowledgement. */
     private static void storeTask(Task task) {
-        tasks[itemCount] = task;
-        itemCount++;
+        tasks.add(task);
         System.out.println("added: " + task);
     }
 
@@ -160,11 +155,11 @@ public class LeBron {
             throw new LeBronException("That's not on the scoreboard — I don't recognize '"
                     + indexText + "' as a task number: mark <task number>");
         }
-        if (index < 0 || index >= itemCount) {
+        if (index < 0 || index >= tasks.size()) {
             throw new LeBronException("No such play on the roster — there's no task number "
-                    + (index + 1) + ". You have " + itemCount + " task(s).");
+                    + (index + 1) + ". You have " + tasks.size() + " task(s).");
         }
-        Task task = tasks[index];
+        Task task = tasks.get(index);
         if (done) {
             task.mark();
             System.out.println("Nice! I've marked this task as done:");
@@ -177,8 +172,8 @@ public class LeBron {
 
     /** Prints all stored tasks as a numbered list, including their done status. */
     private static void printList() {
-        for (int i = 0; i < itemCount; i++) {
-            System.out.println((i + 1) + ". " + tasks[i]);
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i + 1) + ". " + tasks.get(i));
         }
     }
 
