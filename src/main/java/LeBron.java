@@ -45,40 +45,26 @@ public class LeBron {
             if (input.equals("bye")) {
                 break;
             }
-            if (input.equals("list")) {
-                printList();
-            } else if (input.startsWith("mark ")) {
-                try {
+            try {
+                if (input.equals("list")) {
+                    printList();
+                } else if (input.startsWith("mark ")) {
                     markTask(input.substring("mark ".length()), true);
-                } catch (LeBronException e) {
-                    System.out.println(e.getMessage());
-                }
-            } else if (input.startsWith("unmark ")) {
-                try {
+                } else if (input.startsWith("unmark ")) {
                     markTask(input.substring("unmark ".length()), false);
-                } catch (LeBronException e) {
-                    System.out.println(e.getMessage());
-                }
-            } else if (input.equals("todo") || input.startsWith("todo ")) {
-                try {
+                } else if (input.equals("todo") || input.startsWith("todo ")) {
                     storeTask(parseTodo(input.equals("todo") ? "" : input.substring("todo ".length())));
-                } catch (LeBronException e) {
-                    System.out.println(e.getMessage());
-                }
-            } else if (input.equals("deadline") || input.startsWith("deadline ")) {
-                try {
-                    storeTask(parseDeadline(input.equals("deadline") ? "" : input.substring("deadline ".length())));
-                } catch (LeBronException e) {
-                    System.out.println(e.getMessage());
-                }
-            } else if (input.equals("event") || input.startsWith("event ")) {
-                try {
+                } else if (input.equals("deadline") || input.startsWith("deadline ")) {
+                    storeTask(
+                            parseDeadline(input.equals("deadline") ? "" : input.substring("deadline ".length())));
+                } else if (input.equals("event") || input.startsWith("event ")) {
                     storeTask(parseEvent(input.equals("event") ? "" : input.substring("event ".length())));
-                } catch (LeBronException e) {
-                    System.out.println(e.getMessage());
+                } else {
+                    throw new LeBronException(
+                            "That's out of bounds — I don't recognize that command: " + input);
                 }
-            } else {
-                System.out.println("I don't recognize that command: " + input);
+            } catch (LeBronException e) {
+                System.out.println(e.getMessage());
             }
             System.out.println(LINE);
         }
