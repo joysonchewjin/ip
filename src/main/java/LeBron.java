@@ -33,7 +33,8 @@ public class LeBron {
 
     /**
      * Reads commands line by line until "bye" is entered. "list" prints all stored
-     * items; anything else is stored as a new item and acknowledged.
+     * tasks; "mark <n>"/"unmark <n>" update the done status of task n; anything
+     * else is stored as a new task and acknowledged.
      */
     private static void processCommands() {
         Scanner scanner = new Scanner(System.in);
@@ -44,6 +45,10 @@ public class LeBron {
             }
             if (input.equals("list")) {
                 printList();
+            } else if (input.startsWith("mark ")) {
+                markTask(input.substring("mark ".length()), true);
+            } else if (input.startsWith("unmark ")) {
+                markTask(input.substring("unmark ".length()), false);
             } else {
                 addItem(input);
             }
@@ -56,6 +61,23 @@ public class LeBron {
         tasks[itemCount] = new Task(item);
         itemCount++;
         System.out.println("added: " + item);
+    }
+
+    /**
+     * Marks or unmarks the task at the given 1-based index (as shown by
+     * {@link #printList()}) and prints a confirmation.
+     */
+    private static void markTask(String indexText, boolean done) {
+        int index = Integer.parseInt(indexText) - 1;
+        Task task = tasks[index];
+        if (done) {
+            task.mark();
+            System.out.println("Nice! I've marked this task as done:");
+        } else {
+            task.unmark();
+            System.out.println("OK, I've marked this task as not done yet:");
+        }
+        System.out.println("  " + task);
     }
 
     /** Prints all stored tasks as a numbered list, including their done status. */
