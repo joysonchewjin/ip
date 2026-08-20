@@ -33,8 +33,9 @@ public class LeBron {
 
     /**
      * Reads commands line by line until "bye" is entered. "list" prints all stored
-     * tasks; "mark <n>"/"unmark <n>" update the done status of task n; anything
-     * else is stored as a new task and acknowledged.
+     * tasks; "mark <n>"/"unmark <n>" update the done status of task n;
+     * "deadline <description> /by <date>" adds a deadline task; anything else is
+     * stored as a to-do task and acknowledged.
      */
     private static void processCommands() {
         Scanner scanner = new Scanner(System.in);
@@ -49,18 +50,51 @@ public class LeBron {
                 markTask(input.substring("mark ".length()), true);
             } else if (input.startsWith("unmark ")) {
                 markTask(input.substring("unmark ".length()), false);
+            } else if (input.equals("deadline") || input.startsWith("deadline ")) {
+                storeTask(parseDeadline(input.equals("deadline") ? "" : input.substring("deadline ".length())));
             } else {
-                addItem(input);
+                storeTask(new Todo(input));
             }
             System.out.println(LINE);
         }
     }
 
-    /** Stores an item as a new to-do task and prints an acknowledgement. */
-    private static void addItem(String item) {
-        tasks[itemCount] = new Todo(item);
+    /**
+     * Parses the text after "deadline " into a {@link Deadline}, expecting the
+     * form "<description> /by <date>". Prints a friendly error and returns
+     * {@code null} if the description or the "/by <date>" part is missing.
+     */
+    private static Deadline parseDeadline(String args) {
+        int markerIndex = args.indexOf(" /by ");
+        if (markerIndex == -1) {
+            System.out.println("A deadline needs a /by date: deadline <description> /by <date>");
+            return null;
+        }
+        String description = args.substring(0, markerIndex).trim();
+        String by = args.substring(markerIndex + " /by ".length()).trim();
+        if (description.isEmpty()) {
+            System.out.println("A deadline needs a description: deadline <description> /by <date>");
+            return null;
+        }
+        if (by.isEmpty()) {
+            System.out.println("A deadline needs a date after /by: deadline <description> /by <date>");
+            return null;
+        }
+        return new Deadline(description, by);
+    }
+
+    /**
+     * Stores a newly parsed task and prints an acknowledgement, unless parsing
+     * already failed (indicated by {@code task} being {@code null}), in which
+     * case the caller has already printed an error and nothing further happens.
+     */
+    private static void storeTask(Task task) {
+        if (task == null) {
+            return;
+        }
+        tasks[itemCount] = task;
         itemCount++;
-        System.out.println("added: " + item);
+        System.out.println("added: " + task);
     }
 
     /**
