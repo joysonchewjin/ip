@@ -1,3 +1,5 @@
+package lebron.exception;
+
 /**
  * Signals a problem that LeBron can't act on (e.g. a malformed command, missing
  * task, or malformed line in the save file). Messages about user input are

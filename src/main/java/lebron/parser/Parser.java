@@ -1,7 +1,19 @@
+package lebron.parser;
+
+import lebron.exception.LeBronException;
+import lebron.storage.Storage;
+import lebron.task.Deadline;
+import lebron.task.Event;
+import lebron.task.Task;
+import lebron.task.TaskDateTime;
+import lebron.task.TaskList;
+import lebron.task.Todo;
+import lebron.ui.Ui;
+
 /**
  * Interprets a single line of user input and carries out the corresponding
  * action against a {@link TaskList}, {@link Ui}, and {@link Storage}: it
- * both makes sense of the command and executes it, so that {@link LeBron}'s
+ * both makes sense of the command and executes it, so that {@link lebron.LeBron}'s
  * main loop only needs to hand each line off and catch {@link LeBronException}.
  */
 public class Parser {

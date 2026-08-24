@@ -1,5 +1,9 @@
+package lebron.ui;
+
 import java.util.List;
 import java.util.Scanner;
+
+import lebron.task.Task;
 
 /**
  * Handles all interaction with the user: printing the greeting, farewell,

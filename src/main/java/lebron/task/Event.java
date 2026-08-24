@@ -1,3 +1,5 @@
+package lebron.task;
+
 /** A task that starts at a specific date/time and ends at a specific date/time. */
 public class Event extends Task {
     private final TaskDateTime from;
