@@ -3,6 +3,9 @@
 /out/
 /*.iml
 
+# Generated task save file
+/data/
+
 # Gradle build files
 /.gradle/
 /build/
