@@ -22,6 +22,16 @@ public abstract class Task {
         isDone = false;
     }
 
+    /** Returns this task's description, unchanged from what was entered. */
+    public String getDescription() {
+        return description;
+    }
+
+    /** Returns whether this task is currently marked done. */
+    public boolean isDone() {
+        return isDone;
+    }
+
     /** Returns "X" if this task is done, or a blank space otherwise. */
     public String getStatusIcon() {
         return isDone ? "X" : " ";

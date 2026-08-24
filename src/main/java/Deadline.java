@@ -12,6 +12,11 @@ public class Deadline extends Task {
         return "D";
     }
 
+    /** Returns the raw "by" date/time text, unchanged from what was entered. */
+    public String getBy() {
+        return by;
+    }
+
     @Override
     public String toString() {
         return super.toString() + " (by: " + by + ")";
