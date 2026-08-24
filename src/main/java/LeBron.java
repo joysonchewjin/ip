@@ -1,33 +1,18 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class LeBron {
-    private static final String NAME = "LeBron";
-
-    /** Horizontal divider printed around each block of chatbot output. */
-    private static final String LINE = "____________________________________________________________";
-
-    /** ASCII art banner displayed on startup, spelling "LEBRON" in block letters. */
-    private static final String banner =
-            """
-            #     ##### ####  ####   ###  #   #
-            #     #     #   # #   # #   # ##  #
-            #     ###   ####  ####  #   # # # #
-            #     #     #   # #  #  #   # #  ##
-            ##### ##### ####  #   #  ###  #   #
-            """;
-
     /** Store of tasks entered by the user, in entry order. */
     private static final List<Task> tasks = new ArrayList<>();
 
     private static final Storage storage = new Storage();
+    private static final Ui ui = new Ui();
 
     public static void main(String[] args) {
         tasks.addAll(storage.load());
-        greet();
+        ui.showWelcome();
         processCommands();
-        exit();
+        ui.showGoodbye();
     }
 
     /**
@@ -39,15 +24,14 @@ public class LeBron {
      * unrecognized command.
      */
     private static void processCommands() {
-        Scanner scanner = new Scanner(System.in);
-        while (scanner.hasNextLine()) {
-            String input = scanner.nextLine();
+        String input;
+        while ((input = ui.readCommand()) != null) {
             if (input.equals("bye")) {
                 break;
             }
             try {
                 if (input.equals("list")) {
-                    printList();
+                    ui.showTaskList(tasks);
                 } else if (input.startsWith("mark ")) {
                     markTask(input.substring("mark ".length()), true);
                 } else if (input.startsWith("unmark ")) {
@@ -66,9 +50,9 @@ public class LeBron {
                             "That's out of bounds — I don't recognize that command: " + input);
                 }
             } catch (LeBronException e) {
-                System.out.println(e.getMessage());
+                ui.showError(e.getMessage());
             }
-            System.out.println(LINE);
+            ui.showLine();
         }
     }
 
@@ -144,7 +128,7 @@ public class LeBron {
     /** Stores a newly parsed task, prints an acknowledgement, and persists the updated list to disk. */
     private static void storeTask(Task task) {
         tasks.add(task);
-        System.out.println("added: " + task);
+        ui.showAdded(task);
         storage.save(tasks);
     }
 
@@ -169,12 +153,11 @@ public class LeBron {
         Task task = tasks.get(index);
         if (done) {
             task.mark();
-            System.out.println("Nice! I've marked this task as done:");
+            ui.showMarked(task);
         } else {
             task.unmark();
-            System.out.println("OK, I've marked this task as not done yet:");
+            ui.showUnmarked(task);
         }
-        System.out.println("  " + task);
         storage.save(tasks);
     }
 
@@ -197,31 +180,7 @@ public class LeBron {
                     + (index + 1) + ". You have " + tasks.size() + " task(s).");
         }
         Task task = tasks.remove(index);
-        System.out.println("Noted. I've removed this task:");
-        System.out.println("  " + task);
-        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        ui.showDeleted(task, tasks.size());
         storage.save(tasks);
-    }
-
-    /** Prints all stored tasks as a numbered list, including their done status. */
-    private static void printList() {
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + ". " + tasks.get(i));
-        }
-    }
-
-    /** Prints the startup banner and greeting, wrapped in divider lines. */
-    private static void greet() {
-        System.out.println(LINE);
-        System.out.print(banner);
-        System.out.println("Hello! I'm " + NAME + ".");
-        System.out.println("What can I do for you?");
-        System.out.println(LINE);
-    }
-
-    /** Prints the farewell message, wrapped in a divider line. */
-    private static void exit() {
-        System.out.println("Bye. Hope to see you again soon!");
-        System.out.println(LINE);
     }
 }
