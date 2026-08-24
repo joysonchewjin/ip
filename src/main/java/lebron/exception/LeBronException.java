@@ -7,6 +7,7 @@ package lebron.exception;
  * warning.
  */
 public class LeBronException extends Exception {
+    /** Creates a LeBronException with the given user-facing message. */
     public LeBronException(String message) {
         super(message);
     }

@@ -140,6 +140,11 @@ public class Storage {
         return task;
     }
 
+    /**
+     * Parses the done-flag field ("0" or "1") from a save-file line into a boolean.
+     *
+     * @throws LeBronException if {@code field} is neither "0" nor "1".
+     */
     private static boolean parseDoneFlag(String field, String line) throws LeBronException {
         if (field.equals("1")) {
             return true;

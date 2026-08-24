@@ -4,11 +4,13 @@ package lebron.task;
 public class Deadline extends Task {
     private final TaskDateTime by;
 
+    /** Creates a deadline task with the given description, due by {@code by}. */
     public Deadline(String description, TaskDateTime by) {
         super(description);
         this.by = by;
     }
 
+    /** Returns "D", the type icon for deadline tasks. */
     @Override
     public String getTypeIcon() {
         return "D";
@@ -19,6 +21,10 @@ public class Deadline extends Task {
         return by;
     }
 
+    /**
+     * Returns the console display line for this task, including its due date,
+     * e.g. "[D][ ] return book (by: Jun 06 2019, 6:00pm)".
+     */
     @Override
     public String toString() {
         return super.toString() + " (by: " + by + ")";
