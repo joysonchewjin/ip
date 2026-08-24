@@ -179,6 +179,23 @@ public class ParserTest {
     }
 
     @Test
+    public void execute_find_doesNotThrow() throws LeBronException {
+        Parser.execute("todo read book", tasks, ui, storage);
+
+        assertDoesNotThrow(() -> Parser.execute("find book", tasks, ui, storage));
+    }
+
+    @Test
+    public void execute_findEmptyKeyword_throwsLeBronException() {
+        assertThrows(LeBronException.class, () -> Parser.execute("find", tasks, ui, storage));
+    }
+
+    @Test
+    public void execute_findBlankKeyword_throwsLeBronException() {
+        assertThrows(LeBronException.class, () -> Parser.execute("find   ", tasks, ui, storage));
+    }
+
+    @Test
     public void execute_unrecognizedCommand_throwsLeBronException() {
         assertThrows(LeBronException.class, () -> Parser.execute("frobnicate", tasks, ui, storage));
     }

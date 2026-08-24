@@ -65,6 +65,12 @@ public class Ui {
         }
     }
 
+    /** Prints {@code tasks} as a numbered list under a "matching tasks" header. */
+    public void showMatchingTasks(List<Task> tasks) {
+        System.out.println("Here are the matching tasks in your list:");
+        showTaskList(tasks);
+    }
+
     /** Prints an acknowledgement that {@code task} was added. */
     public void showAdded(Task task) {
         System.out.println("added: " + task);
