@@ -105,7 +105,7 @@ public class LeBron {
             throw new LeBronException(
                     "Travel called! A deadline needs a date after /by: deadline <description> /by <date>");
         }
-        return new Deadline(description, by);
+        return new Deadline(description, TaskDateTime.parseInput(by));
     }
 
     /**

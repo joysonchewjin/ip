@@ -10,7 +10,7 @@ import java.util.List;
  * (not JSON, since this project has no third-party dependencies):
  * <pre>
  * T | 1 | read book
- * D | 0 | return book | June 6th
+ * D | 0 | return book | 2019-06-06T18:00
  * E | 0 | project meeting | Aug 6th | 2pm-4pm
  * </pre>
  * A missing file or missing {@code data/} folder is treated as an empty task
@@ -73,7 +73,7 @@ public class Storage {
         String done = task.isDone() ? "1" : "0";
         String base = task.getTypeIcon() + DELIMITER + done + DELIMITER + task.getDescription();
         if (task instanceof Deadline deadline) {
-            return base + DELIMITER + deadline.getBy();
+            return base + DELIMITER + deadline.getBy().toStorageString();
         } else if (task instanceof Event event) {
             return base + DELIMITER + event.getFrom() + DELIMITER + event.getTo();
         }
@@ -102,7 +102,7 @@ public class Storage {
                 if (fields.length < 4) {
                     throw new LeBronException("Malformed deadline save line: " + line);
                 }
-                task = new Deadline(description, fields[3]);
+                task = new Deadline(description, TaskDateTime.parseStorage(fields[3]));
             }
             case "E" -> {
                 if (fields.length < 5) {
