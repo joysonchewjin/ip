@@ -65,6 +65,9 @@ public class Parser {
             tasks.add(task);
             ui.showAdded(task);
             storage.save(tasks.getAll());
+        } else if (input.equals("find") || input.startsWith("find ")) {
+            String keyword = parseFindKeyword(input.equals("find") ? "" : input.substring("find ".length()));
+            ui.showMatchingTasks(tasks.find(keyword));
         } else {
             throw new LeBronException("That's out of bounds — I don't recognize that command: " + input);
         }
@@ -152,5 +155,18 @@ public class Parser {
                     + "event <description> /from <start> /to <end>");
         }
         return new Event(description, TaskDateTime.parseInput(from), TaskDateTime.parseInput(to));
+    }
+
+    /**
+     * Parses the text after "find " into a search keyword.
+     *
+     * @throws LeBronException if the keyword is missing.
+     */
+    private static String parseFindKeyword(String args) throws LeBronException {
+        String keyword = args.trim();
+        if (keyword.isEmpty()) {
+            throw new LeBronException("Airball! A find needs a keyword: find <keyword>");
+        }
+        return keyword;
     }
 }

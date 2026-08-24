@@ -84,6 +84,23 @@ public class TaskList {
         return Collections.unmodifiableList(tasks);
     }
 
+    /**
+     * Returns the tasks, in entry order, whose description contains
+     * {@code keyword} (case-insensitive).
+     *
+     * @param keyword text to search for within each task's description.
+     */
+    public List<Task> find(String keyword) {
+        String lowerKeyword = keyword.toLowerCase();
+        List<Task> matches = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase().contains(lowerKeyword)) {
+                matches.add(task);
+            }
+        }
+        return matches;
+    }
+
     /** @throws LeBronException if {@code index} is not a valid 0-based index into the list. */
     private void checkIndex(int index) throws LeBronException {
         if (index < 0 || index >= tasks.size()) {

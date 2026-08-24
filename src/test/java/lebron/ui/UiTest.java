@@ -79,6 +79,18 @@ public class UiTest {
     }
 
     @Test
+    public void showMatchingTasks_printsHeaderThenOneBasedNumberedLines() {
+        Task first = new Todo("read book");
+        Task second = new Todo("return book");
+
+        new Ui().showMatchingTasks(List.of(first, second));
+
+        assertEquals("Here are the matching tasks in your list:" + System.lineSeparator()
+                        + "1. " + first + System.lineSeparator() + "2. " + second + System.lineSeparator(),
+                output());
+    }
+
+    @Test
     public void showAdded_printsAddedConfirmationWithTask() {
         Task task = new Todo("read book");
 

@@ -161,4 +161,40 @@ public class TaskListTest {
 
         assertThrows(UnsupportedOperationException.class, () -> all.add(new Todo("write code")));
     }
+
+    @Test
+    public void find_matchingKeyword_returnsMatchesInEntryOrder() {
+        TaskList tasks = new TaskList();
+        Todo first = new Todo("read book");
+        Todo second = new Todo("write code");
+        Todo third = new Todo("return book");
+        tasks.add(first);
+        tasks.add(second);
+        tasks.add(third);
+
+        List<Task> matches = tasks.find("book");
+
+        assertEquals(List.of(first, third), matches);
+    }
+
+    @Test
+    public void find_differentCase_matchesCaseInsensitively() {
+        TaskList tasks = new TaskList();
+        Todo todo = new Todo("read book");
+        tasks.add(todo);
+
+        List<Task> matches = tasks.find("BOOK");
+
+        assertEquals(List.of(todo), matches);
+    }
+
+    @Test
+    public void find_noMatch_returnsEmptyList() {
+        TaskList tasks = new TaskList();
+        tasks.add(new Todo("read book"));
+
+        List<Task> matches = tasks.find("homework");
+
+        assertEquals(List.of(), matches);
+    }
 }
