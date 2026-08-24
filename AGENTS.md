@@ -37,3 +37,4 @@ All Java code in this repository — new code and edits to existing code — mus
 Use lightweight tags unless the user requests an annotated tag.
 When proposing or creating a commit message, include enough detail to explain the rationale for the change.
 Do not commit or push unless explicitly asked.
+All commit messages and branch names must follow the `seedu-git-standard` skill (based on https://se-education.org/guides/conventions/git.html). Load that skill before drafting any commit message or branch name.
