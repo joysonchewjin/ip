@@ -1,3 +1,11 @@
+package lebron;
+
+import lebron.exception.LeBronException;
+import lebron.parser.Parser;
+import lebron.storage.Storage;
+import lebron.task.TaskList;
+import lebron.ui.Ui;
+
 /**
  * Entry point for the LeBron task-manager chatbot. Wires together the
  * Ui, Storage, TaskList, and Parser collaborators and runs the main
