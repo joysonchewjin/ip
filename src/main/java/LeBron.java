@@ -105,7 +105,7 @@ public class LeBron {
             throw new LeBronException(
                     "Travel called! A deadline needs a date after /by: deadline <description> /by <date>");
         }
-        return new Deadline(description, by);
+        return new Deadline(description, TaskDateTime.parseInput(by));
     }
 
     /**
@@ -136,7 +136,7 @@ public class LeBron {
             throw new LeBronException("Travel called! An event needs both a /from and /to value: "
                     + "event <description> /from <start> /to <end>");
         }
-        return new Event(description, from, to);
+        return new Event(description, TaskDateTime.parseInput(from), TaskDateTime.parseInput(to));
     }
 
     /** Stores a newly parsed task, prints an acknowledgement, and persists the updated list to disk. */
