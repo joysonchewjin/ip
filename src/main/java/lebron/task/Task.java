@@ -9,6 +9,7 @@ public abstract class Task {
     private final String description;
     private boolean isDone;
 
+    /** Creates a new, not-done task with the given description. */
     public Task(String description) {
         this.description = description;
         this.isDone = false;
@@ -42,6 +43,7 @@ public abstract class Task {
     /** Returns the single-letter icon identifying this task's type, e.g. "T", "D", "E". */
     public abstract String getTypeIcon();
 
+    /** Returns the console display line for this task, e.g. "[T][ ] read book". */
     @Override
     public String toString() {
         return "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description;

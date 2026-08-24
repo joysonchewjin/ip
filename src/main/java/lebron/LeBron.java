@@ -12,6 +12,12 @@ import lebron.ui.Ui;
  * read-interpret-respond loop until the user types "bye" or input ends.
  */
 public class LeBron {
+    /**
+     * Runs LeBron's main read-interpret-respond loop: greets the user, then
+     * repeatedly reads a line of input and hands it to {@link Parser#execute},
+     * printing any {@link LeBronException} as an error, until the user types
+     * "bye" or input ends.
+     */
     public static void main(String[] args) {
         Ui ui = new Ui();
         Storage storage = new Storage();
