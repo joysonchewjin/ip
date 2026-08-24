@@ -14,6 +14,16 @@ public class Event extends Task {
         return "E";
     }
 
+    /** Returns the raw "from" date/time text, unchanged from what was entered. */
+    public String getFrom() {
+        return from;
+    }
+
+    /** Returns the raw "to" date/time text, unchanged from what was entered. */
+    public String getTo() {
+        return to;
+    }
+
     @Override
     public String toString() {
         return super.toString() + " (from: " + from + " to: " + to + ")";
