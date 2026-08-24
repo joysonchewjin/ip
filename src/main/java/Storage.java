@@ -17,8 +17,19 @@ import java.util.List;
  * list rather than an error; the folder is created on first save.
  */
 public class Storage {
-    private static final Path FILE_PATH = Path.of("data", "lebron.txt");
     private static final String DELIMITER = " | ";
+
+    private final Path filePath;
+
+    /** Creates a Storage backed by the default save file, {@code ./data/lebron.txt}. */
+    public Storage() {
+        this(Path.of("data", "lebron.txt"));
+    }
+
+    /** Creates a Storage backed by the given file path. */
+    public Storage(Path filePath) {
+        this.filePath = filePath;
+    }
 
     /**
      * Loads tasks from disk. Returns an empty list if the file or its containing
@@ -26,13 +37,13 @@ public class Storage {
      * parsed are skipped with a warning rather than aborting the whole load, so
      * one corrupted line doesn't cost the user their entire task list.
      */
-    public static List<Task> load() {
+    public List<Task> load() {
         List<Task> tasks = new ArrayList<>();
-        if (!Files.exists(FILE_PATH)) {
+        if (!Files.exists(filePath)) {
             return tasks;
         }
         try {
-            for (String line : Files.readAllLines(FILE_PATH)) {
+            for (String line : Files.readAllLines(filePath)) {
                 if (line.isBlank()) {
                     continue;
                 }
@@ -55,14 +66,14 @@ public class Storage {
      * are reported but not thrown, since losing persistence shouldn't crash an
      * otherwise-working interactive session.
      */
-    public static void save(List<Task> tasks) {
+    public void save(List<Task> tasks) {
         try {
-            Files.createDirectories(FILE_PATH.getParent());
+            Files.createDirectories(filePath.getParent());
             List<String> lines = new ArrayList<>();
             for (Task task : tasks) {
                 lines.add(taskToLine(task));
             }
-            Files.write(FILE_PATH, lines);
+            Files.write(filePath, lines);
         } catch (IOException e) {
             System.out.println("Couldn't save the task list: " + e.getMessage());
         }
