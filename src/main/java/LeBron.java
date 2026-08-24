@@ -22,6 +22,7 @@ public class LeBron {
     private static final List<Task> tasks = new ArrayList<>();
 
     public static void main(String[] args) {
+        tasks.addAll(Storage.load());
         greet();
         processCommands();
         exit();
@@ -138,15 +139,16 @@ public class LeBron {
         return new Event(description, from, to);
     }
 
-    /** Stores a newly parsed task and prints an acknowledgement. */
+    /** Stores a newly parsed task, prints an acknowledgement, and persists the updated list to disk. */
     private static void storeTask(Task task) {
         tasks.add(task);
         System.out.println("added: " + task);
+        Storage.save(tasks);
     }
 
     /**
      * Marks or unmarks the task at the given 1-based index (as shown by
-     * {@link #printList()}) and prints a confirmation.
+     * {@link #printList()}), prints a confirmation, and persists the updated list to disk.
      *
      * @throws LeBronException if the index is not a number or is out of range.
      */
@@ -171,11 +173,12 @@ public class LeBron {
             System.out.println("OK, I've marked this task as not done yet:");
         }
         System.out.println("  " + task);
+        Storage.save(tasks);
     }
 
     /**
-     * Deletes the task at the given 1-based index (as shown by {@link #printList()})
-     * and prints a confirmation.
+     * Deletes the task at the given 1-based index (as shown by {@link #printList()}),
+     * prints a confirmation, and persists the updated list to disk.
      *
      * @throws LeBronException if the index is not a number or is out of range.
      */
@@ -195,6 +198,7 @@ public class LeBron {
         System.out.println("Noted. I've removed this task:");
         System.out.println("  " + task);
         System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        Storage.save(tasks);
     }
 
     /** Prints all stored tasks as a numbered list, including their done status. */
