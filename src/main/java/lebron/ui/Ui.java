@@ -17,7 +17,7 @@ public class Ui {
     private static final String LINE = "____________________________________________________________";
 
     /** ASCII art banner displayed on startup, spelling "LEBRON" in block letters. */
-    private static final String banner =
+    private static final String BANNER =
             """
             #     ##### ####  ####   ###  #   #
             #     #     #   # #   # #   # ##  #
@@ -31,7 +31,7 @@ public class Ui {
     /** Prints the startup banner and greeting, wrapped in divider lines. */
     public void showWelcome() {
         System.out.println(LINE);
-        System.out.print(banner);
+        System.out.print(BANNER);
         System.out.println("Hello! I'm " + NAME + ".");
         System.out.println("What can I do for you?");
         System.out.println(LINE);

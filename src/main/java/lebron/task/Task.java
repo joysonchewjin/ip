@@ -9,6 +9,7 @@ public abstract class Task {
     private final String description;
     private boolean isDone;
 
+    /** Creates a new, not-done task with the given description. */
     public Task(String description) {
         this.description = description;
         this.isDone = false;

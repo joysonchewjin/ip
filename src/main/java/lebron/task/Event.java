@@ -5,6 +5,7 @@ public class Event extends Task {
     private final TaskDateTime from;
     private final TaskDateTime to;
 
+    /** Creates an event task with the given description, spanning {@code from} to {@code to}. */
     public Event(String description, TaskDateTime from, TaskDateTime to) {
         super(description);
         this.from = from;

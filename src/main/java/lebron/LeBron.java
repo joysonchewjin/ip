@@ -12,6 +12,7 @@ import lebron.ui.Ui;
  * read-interpret-respond loop until the user types "bye" or input ends.
  */
 public class LeBron {
+    /** Runs LeBron's read-interpret-respond loop until the user types "bye" or input ends. */
     public static void main(String[] args) {
         Ui ui = new Ui();
         Storage storage = new Storage();
