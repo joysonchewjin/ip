@@ -11,7 +11,7 @@ import java.util.List;
  * <pre>
  * T | 1 | read book
  * D | 0 | return book | 2019-06-06T18:00
- * E | 0 | project meeting | Aug 6th | 2pm-4pm
+ * E | 0 | project meeting | 2019-08-06T14:00 | 2019-08-06T16:00
  * </pre>
  * A missing file or missing {@code data/} folder is treated as an empty task
  * list rather than an error; the folder is created on first save.
@@ -75,7 +75,8 @@ public class Storage {
         if (task instanceof Deadline deadline) {
             return base + DELIMITER + deadline.getBy().toStorageString();
         } else if (task instanceof Event event) {
-            return base + DELIMITER + event.getFrom() + DELIMITER + event.getTo();
+            return base + DELIMITER + event.getFrom().toStorageString()
+                    + DELIMITER + event.getTo().toStorageString();
         }
         return base;
     }
@@ -108,7 +109,8 @@ public class Storage {
                 if (fields.length < 5) {
                     throw new LeBronException("Malformed event save line: " + line);
                 }
-                task = new Event(description, fields[3], fields[4]);
+                task = new Event(description, TaskDateTime.parseStorage(fields[3]),
+                        TaskDateTime.parseStorage(fields[4]));
             }
             default -> throw new LeBronException("Unknown task type in save line: " + line);
         }
