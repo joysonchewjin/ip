@@ -55,7 +55,7 @@ public class StorageTest {
     }
 
     @Test
-    public void save_missingParentDirectories_createsThem() throws IOException {
+    public void save_missingParentDirectories_createsThem() throws Exception {
         Storage storage = new Storage(tempDir.resolve("nested").resolve("dir").resolve("tasks.txt"));
 
         storage.save(List.of(new Todo("read book")));

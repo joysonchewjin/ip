@@ -71,11 +71,13 @@ public class Storage {
 
     /**
      * Overwrites the save file with a full snapshot of the given task list,
-     * creating the {@code data/} folder first if it doesn't exist yet. Failures
-     * are reported but not thrown, since losing persistence shouldn't crash an
-     * otherwise-working interactive session.
+     * creating the {@code data/} folder first if it doesn't exist yet.
+     *
+     * @throws LeBronException if the file can't be written, so the caller (which
+     *     already has a {@link lebron.ui.Ui} to report through) can surface the
+     *     failure to whichever interface — console or GUI — is currently in use.
      */
-    public void save(List<Task> tasks) {
+    public void save(List<Task> tasks) throws LeBronException {
         try {
             Files.createDirectories(filePath.getParent());
             List<String> lines = new ArrayList<>();
@@ -84,7 +86,7 @@ public class Storage {
             }
             Files.write(filePath, lines);
         } catch (IOException e) {
-            System.out.println("Couldn't save the task list: " + e.getMessage());
+            throw new LeBronException("Couldn't save the task list: " + e.getMessage());
         }
     }
 
