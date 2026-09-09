@@ -90,20 +90,19 @@ public class ParserTest {
 
     @Test
     public void execute_deadlineEmptyDescription_throwsLeBronException() {
-        assertThrows(LeBronException.class,
-                () -> Parser.execute("deadline /by 2/12/2019", tasks, ui, storage));
+        assertThrows(LeBronException.class, () -> Parser.execute("deadline /by 2/12/2019", tasks, ui, storage));
     }
 
     @Test
     public void execute_deadlineEmptyDate_throwsLeBronException() {
-        assertThrows(LeBronException.class,
-                () -> Parser.execute("deadline return book /by ", tasks, ui, storage));
+        assertThrows(LeBronException.class, () -> Parser.execute("deadline return book /by ", tasks, ui, storage));
     }
 
     @Test
     public void execute_deadlineInvalidDateText_throwsLeBronException() {
-        assertThrows(LeBronException.class,
-                () -> Parser.execute("deadline return book /by nonsense", tasks, ui, storage));
+        String input = "deadline return book /by nonsense";
+
+        assertThrows(LeBronException.class, () -> Parser.execute(input, tasks, ui, storage));
     }
 
     @Test
@@ -119,20 +118,23 @@ public class ParserTest {
 
     @Test
     public void execute_eventMissingFrom_throwsLeBronException() {
-        assertThrows(LeBronException.class,
-                () -> Parser.execute("event project meeting /to 6/8/2019", tasks, ui, storage));
+        String input = "event project meeting /to 6/8/2019";
+
+        assertThrows(LeBronException.class, () -> Parser.execute(input, tasks, ui, storage));
     }
 
     @Test
     public void execute_eventMissingTo_throwsLeBronException() {
-        assertThrows(LeBronException.class,
-                () -> Parser.execute("event project meeting /from 6/8/2019", tasks, ui, storage));
+        String input = "event project meeting /from 6/8/2019";
+
+        assertThrows(LeBronException.class, () -> Parser.execute(input, tasks, ui, storage));
     }
 
     @Test
     public void execute_eventEmptyFromAndTo_throwsLeBronException() {
-        assertThrows(LeBronException.class,
-                () -> Parser.execute("event project meeting /from  /to ", tasks, ui, storage));
+        String input = "event project meeting /from  /to ";
+
+        assertThrows(LeBronException.class, () -> Parser.execute(input, tasks, ui, storage));
     }
 
     @Test
